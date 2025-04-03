@@ -1,0 +1,92 @@
+.terminal-container {
+  display: flex;
+  flex-direction: column;
+  background-color: #1e1e1e;
+  color: #f0f0f0;
+  border-radius: 4px;
+  overflow: hidden;
+  font-family: 'Consolas', 'Courier New', monospace;
+  width: 100%;
+  border: 1px solid #333;
+}
+
+.terminal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: #2d2d2d;
+  border-bottom: 1px solid #444;
+}
+
+.terminal-header h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.terminal-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.terminal-clear-button {
+  background-color: transparent;
+  color: #ccc;
+  border: 1px solid #555;
+  border-radius: 3px;
+  padding: 2px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.terminal-clear-button:hover {
+  background-color: #444;
+  color: #fff;
+}
+
+.terminal-content {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  min-height: 100px;
+  max-height: calc(100% - 40px);
+}
+
+.terminal-output {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-all;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.terminal-placeholder {
+  color: #888;
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 80px;
+  font-size: 13px;
+}
+
+/* 滚动条样式 */
+.terminal-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.terminal-content::-webkit-scrollbar-track {
+  background: #2d2d2d;
+}
+
+.terminal-content::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 4px;
+}
+
+.terminal-content::-webkit-scrollbar-thumb:hover {
+  background-color: #777;
+}

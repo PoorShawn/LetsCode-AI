@@ -1,0 +1,130 @@
+.app-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #1a1a1a;
+  color: #f0f0f0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.app-header {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  background-color: #252525;
+  border-bottom: 1px solid #3d3d3d;
+  justify-content: space-between;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.app-header h1 {
+  color: #ffffff;
+  font-size: 1.5rem;
+  margin: 0;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
+.app-header h1::before {
+  content: '🤖';
+  margin-right: 10px;
+  font-size: 1.8rem;
+}
+
+.app-main {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.panels-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border-left: 1px solid #3d3d3d;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+  width: 320px; /* 增加宽度 */
+}
+
+.editor-section {
+  flex: 1;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+
+.code-editor-container {
+  width: 100%;
+  height: calc(100% - 30px);
+  transition: all 0.3s ease;
+}
+
+.current-file-info {
+  height: 30px;
+  background-color: #252525;
+  color: #cccccc;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  border-top: 1px solid #3d3d3d;
+}
+
+.settings-button {
+  background: none;
+  border: none;
+  color: #cccccc;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.settings-button:hover {
+  background-color: #3d3d3d;
+  color: #ffffff;
+  transform: rotate(30deg);
+}
+
+/* 添加响应式设计 */
+@media (max-width: 768px) {
+  .app-main {
+    flex-direction: column;
+  }
+  
+  .panels-container {
+    width: 100%;
+    height: 300px;
+    border-left: none;
+    border-top: 1px solid #3d3d3d;
+  }
+}
+
+/* 添加滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3d3d3d;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4d4d4d;
+}

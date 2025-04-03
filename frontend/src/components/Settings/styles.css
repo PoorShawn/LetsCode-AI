@@ -1,0 +1,123 @@
+.settings-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.settings-panel {
+  width: 500px;
+  max-width: 90%;
+  max-height: 90vh;
+  background-color: #252526;
+  border: 1px solid #3d3d3d;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.settings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background-color: #2d2d2d;
+  border-bottom: 1px solid #3d3d3d;
+}
+
+.settings-header h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.settings-close-button {
+  background: none;
+  border: none;
+  color: #cccccc;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.settings-close-button:hover {
+  color: #ffffff;
+}
+
+.settings-content {
+  padding: 16px;
+  overflow-y: auto;
+  max-height: calc(90vh - 60px);
+}
+
+.settings-section {
+  margin-bottom: 24px;
+}
+
+.settings-section h4 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  color: #cccccc;
+  border-bottom: 1px solid #3d3d3d;
+  padding-bottom: 8px;
+}
+
+.settings-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+
+.settings-item label {
+  color: #cccccc;
+  flex: 1;
+}
+
+.settings-select {
+  background-color: #3c3c3c;
+  color: #ffffff;
+  border: 1px solid #3d3d3d;
+  border-radius: 2px;
+  padding: 4px 8px;
+  width: 150px;
+  outline: none;
+}
+
+.settings-select:focus {
+  border-color: #007acc;
+}
+
+.settings-input {
+  background-color: #3c3c3c;
+  color: #ffffff;
+  border: 1px solid #3d3d3d;
+  border-radius: 2px;
+  padding: 4px 8px;
+  width: 60px;
+  outline: none;
+}
+
+.settings-input:focus {
+  border-color: #007acc;
+}
+
+.settings-checkbox {
+  width: 16px;
+  height: 16px;
+  accent-color: #007acc;
+}
