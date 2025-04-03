@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Moonshot API - 智能对话</title>
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        #chat-container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 5px; }
+        #chat-history { height: 500px; overflow-y: auto; padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 10px; }
+        .message { padding: 10px; border-radius: 5px; margin-bottom: 10px; }
+        .user-message { background-color: #e0f7fa; }
+        .bot-message { background-color: #f8f9fa; }
+        pre { padding: 10px; background: #282c34; color: white; border-radius: 5px; overflow-x: auto; }
+        code { font-family: monospace; }
+        #chat-input { display: flex; gap: 10px; }
+        #user-input { flex-grow: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+        .suggestion-button { display: block; width: 100%; margin-top: 5px; padding: 8px; background-color: #f0f0f0; border: 1px solid #ccc; border-radius: 5px; cursor: pointer; }
+        .suggestion-button:hover { background-color: #e0e0e0; }
+    </style>
+    </head>
+    <body>
+        <div id="chat-container">
+            <div id="chat-history"></div>
+            <div id="chat-input">
+                <input type="text" id="user-input" placeholder="在这里输入你的问题...">
+                <button id="send-button">发送</button>
+            </div>
+            <div id="suggestions-container"></div>
+        </div>
+
+        <script>
+            const chatHistory = document.getElementById('chat-history');
+            const userInput = document.getElementById('user-input');
+            const sendButton = document.getElementById('send-button');
+            const suggestionsContainer = document.getElementById('suggestions-container');
+
+            function sendMessage(message) {
+                if (!message.trim()) return;
+                
+                // 用户消息
+                const userMessageElement = document.createElement('div');
+                userMessageElement.classList.add('message', 'user-message');
+                userMessageElement.textContent = message;
+                chatHistory.appendChild(userMessageElement);
+
+                // 发送到后端
+                fetch('http://localhost:5003/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: message.trim() })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // 机器人回复
+                    const botMessageElement = document.createElement('div');
+                    botMessageElement.classList.add('message', 'bot-message');
+
+                    const markdownContent = marked.parse(data.message);
+                    botMessageElement.innerHTML = markdownContent;
+
+                    chatHistory.appendChild(botMessageElement);
+
+                    // 让代码高亮
+                    document.querySelectorAll('pre code').forEach((block) => {
+                        hljs.highlightElement(block);
+                    });
+
+                    // 先清空旧的建议框，再插入新的
+                    suggestionsContainer.innerHTML = ''; 
+
+                    if (data.suggestions && data.suggestions.length > 0) {
+                        data.suggestions.forEach(suggestion => {
+                            const suggestionButton = document.createElement('button');
+                            suggestionButton.textContent = suggestion;
+                            suggestionButton.classList.add('suggestion-button');
+                            suggestionButton.addEventListener('click', () => sendMessage(suggestion));
+                            suggestionsContainer.appendChild(suggestionButton);
+                        });
+                    }
+
+                    // 滚动到底部
+                    chatHistory.scrollTop = chatHistory.scrollHeight;
+                })
+                .catch(error => console.error('Error:', error));
+                
+                // 清空输入框
+                userInput.value = '';
+            }
+
+            // 点击按钮发送
+            sendButton.addEventListener('click', () => sendMessage(userInput.value));
+
+            // 回车键发送
+            userInput.addEventListener('keypress', (event) => {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    sendMessage(userInput.value);
+                }
+            });
+        </script>
+
+        <style>
+            #chat-container {
+                width: 100%;
+                max-width: 600px;
+                margin: 0 auto;
+                padding: 20px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+
+            #chat-history {
+                height: 600px;
+                overflow-y: scroll;
+                border: 1px solid #ccc;
+                padding: 10px;
+                border-radius: 5px;
+                margin-bottom: 10px;
+            }
+
+            .user-message {
+                background-color: #e0f7fa;
+                padding: 10px;
+                margin-bottom: 10px;
+                border-radius: 5px;
+            }
+
+            .bot-message {
+                background-color: #f8f9fa;
+                padding: 10px;
+                margin-bottom: 10px;
+                border-radius: 5px;
+            }
+
+            #chat-input {
+                display: flex;
+                gap: 10px;
+            }
+
+            #user-input {
+                flex-grow: 1;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+
+            .suggestion-button {
+                display: block;
+                width: 100%;
+                margin-top: 5px;
+                padding: 8px;
+                background-color: #f0f0f0;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            .suggestion-button:hover {
+                background-color: #e0e0e0;
+            }
+        </style>
+    </body>
+</html>
