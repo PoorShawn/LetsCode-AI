@@ -1,0 +1,169 @@
+.file-tree {
+  width: 250px;
+  height: 100%;
+  background-color: #252526;
+  color: #ffffff;
+  overflow-y: auto;
+  padding: 10px 0;
+  border-right: 1px solid #3d3d3d;
+  user-select: none;
+}
+
+.file-tree-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 15px 10px;
+  border-bottom: 1px solid #3d3d3d;
+  margin-bottom: 10px;
+}
+
+.file-tree-header h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.file-tree-add-button {
+  background-color: #0e639c;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.file-tree-add-button:hover {
+  background-color: #1177bb;
+}
+
+.file-tree-item {
+  margin: 2px 0;
+}
+
+.file-tree-item-header {
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.file-tree-item-header:hover {
+  background-color: #2a2d2e;
+}
+
+.file-tree-item-icon {
+  margin-right: 6px;
+  font-size: 14px;
+}
+
+.file-tree-item-name {
+  font-size: 13px;
+}
+
+.file-tree-item-children {
+  margin-left: 16px;
+}
+
+.file-tree-item-header.directory {
+  font-weight: 500;
+}
+
+.file-tree-item-header.file {
+  font-weight: normal;
+}
+
+/* 上下文菜单样式 */
+.context-menu {
+  position: fixed;
+  background-color: #252526;
+  border: 1px solid #3d3d3d;
+  border-radius: 3px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  min-width: 150px;
+}
+
+.context-menu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  color: #cccccc;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.context-menu button:hover {
+  background-color: #2a2d2e;
+}
+
+/* 文件对话框样式 */
+.file-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.file-dialog {
+  background-color: #252526;
+  border: 1px solid #3d3d3d;
+  border-radius: 4px;
+  padding: 20px;
+  width: 400px;
+  max-width: 90%;
+}
+
+.file-dialog h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.file-dialog input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
+  background-color: #3c3c3c;
+  border: 1px solid #3d3d3d;
+  color: #ffffff;
+  border-radius: 3px;
+}
+
+.file-dialog-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.file-dialog-buttons button {
+  padding: 6px 12px;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+}
+
+.file-dialog-buttons button:first-child {
+  background-color: #0e639c;
+  color: white;
+}
+
+.file-dialog-buttons button:last-child {
+  background-color: #3c3c3c;
+  color: #cccccc;
+}
+
+.file-dialog-buttons button:hover {
+  opacity: 0.9;
+}

@@ -1,0 +1,146 @@
+.debug-panel {
+  display: flex;
+  flex-direction: column;
+  background-color: #1e1e1e;
+  color: #f0f0f0;
+  border-radius: 4px;
+  overflow: hidden;
+  width: 100%;
+  border: 1px solid #333;
+  margin-bottom: 10px;
+}
+
+.debug-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: #2d2d2d;
+  border-bottom: 1px solid #444;
+}
+
+.debug-panel-header h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.debug-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.run-button {
+  background-color: #0e639c;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 4px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.run-button:hover {
+  background-color: #1177bb;
+}
+
+.run-button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}
+
+.debug-mode-toggle {
+  background-color: transparent;
+  color: #ccc;
+  border: 1px solid #555;
+  border-radius: 3px;
+  padding: 4px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.debug-mode-toggle:hover {
+  background-color: #444;
+}
+
+.debug-mode-toggle.active {
+  background-color: #6a329f;
+  border-color: #6a329f;
+  color: white;
+}
+
+.debug-toolbar {
+  display: flex;
+  gap: 5px;
+  padding: 8px 12px;
+  background-color: #252525;
+  border-bottom: 1px solid #444;
+  overflow-x: auto;
+}
+
+.debug-button {
+  background-color: #333;
+  color: #ccc;
+  border: 1px solid #555;
+  border-radius: 3px;
+  padding: 3px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.debug-button:hover:not(:disabled) {
+  background-color: #444;
+  color: white;
+}
+
+.debug-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.variables-panel {
+  padding: 10px;
+  background-color: #252525;
+  border-top: 1px solid #444;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.variables-panel h4 {
+  margin: 0 0 8px 0;
+  font-size: 13px;
+  color: #ccc;
+}
+
+.variables-content {
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 12px;
+}
+
+.placeholder-text {
+  color: #888;
+  font-style: italic;
+  text-align: center;
+}
+
+/* 滚动条样式 */
+.variables-panel::-webkit-scrollbar {
+  width: 8px;
+}
+
+.variables-panel::-webkit-scrollbar-track {
+  background: #2d2d2d;
+}
+
+.variables-panel::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 4px;
+}
+
+.variables-panel::-webkit-scrollbar-thumb:hover {
+  background-color: #777;
+}

@@ -1,0 +1,140 @@
+.snippet-panel {
+  width: 300px;
+  height: 100%;
+  background-color: #252526;
+  border-left: 1px solid #3d3d3d;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.snippet-panel-header {
+  padding: 10px 15px;
+  background-color: #2d2d2d;
+  border-bottom: 1px solid #3d3d3d;
+}
+
+.snippet-panel-header h3 {
+  margin: 0;
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.snippet-panel-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 10px;
+}
+
+.snippet-search {
+  margin-bottom: 10px;
+}
+
+.snippet-search-input {
+  width: 100%;
+  background-color: #3c3c3c;
+  border: 1px solid #3d3d3d;
+  color: #ffffff;
+  padding: 8px 10px;
+  border-radius: 4px;
+  outline: none;
+}
+
+.snippet-search-input:focus {
+  border-color: #007acc;
+}
+
+.snippet-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.snippet-category-button {
+  background-color: #3c3c3c;
+  color: #cccccc;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.snippet-category-button:hover {
+  background-color: #4c4c4c;
+}
+
+.snippet-category-button.active {
+  background-color: #0e639c;
+  color: white;
+}
+
+.snippet-list {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.snippet-item {
+  background-color: #2d2d2d;
+  border: 1px solid #3d3d3d;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.snippet-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.snippet-item-header h4 {
+  margin: 0;
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.snippet-language {
+  font-size: 12px;
+  color: #cccccc;
+  background-color: #3c3c3c;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.snippet-description {
+  font-size: 12px;
+  color: #cccccc;
+  margin: 5px 0 10px;
+}
+
+.snippet-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.snippet-insert-button {
+  background-color: #0e639c;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.snippet-insert-button:hover {
+  background-color: #1177bb;
+}
+
+.snippet-empty-state {
+  color: #cccccc;
+  text-align: center;
+  padding: 20px;
+  font-size: 13px;
+}
