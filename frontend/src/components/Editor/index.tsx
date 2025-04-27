@@ -1,6 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
-import './styles.css';
 
 interface CodeEditorProps {
   value: string;
@@ -61,15 +60,24 @@ const CodeEditor = ({
 
 
   return (
-    <div className="code-editor-container">
+    <div className="w-full h-full relative overflow-hidden">
       {loadError ? (
-        <div className="editor-error-message">
+        <div className="w-full h-full flex flex-col justify-center items-center bg-[#1e1e1e] text-[#ff6b6b] p-5 text-center">
           <p>{loadError}</p>
-          <button onClick={() => window.location.reload()}>刷新页面</button>
+          <button 
+            onClick={() => window.location.reload()}
+            className="mt-4 bg-[#4d4d4d] text-white border-none px-4 py-2 rounded cursor-pointer hover:bg-[#5a5a5a]"
+          >
+            刷新页面
+          </button>
         </div>
       ) : (
         <>
-          {isLoading && <div className="editor-loading">加载编辑器中...</div>}
+          {isLoading && (
+            <div className="w-full h-full flex justify-center items-center bg-[#1e1e1e] text-gray-300 text-base">
+              加载编辑器中...
+            </div>
+          )}
           <Editor
             height={height}
             defaultLanguage={language}
@@ -79,7 +87,6 @@ const CodeEditor = ({
             onMount={handleEditorDidMount}
             beforeMount={handleEditorWillMount}
             onValidate={handleEditorValidation}
-            // Removed onError as it is not a valid prop for the Editor component
             theme={theme}
             options={{
               minimap: { enabled: true },

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import './styles.css';
 import { executeCode, CodeExecutionResult } from '../../api/codeExecutionService';
 import Terminal from '../Terminal';
 
@@ -11,8 +10,8 @@ interface DebugPanelProps {
 }
 
 const DebugPanel = ({ code, language }: DebugPanelProps) => {
-  const [isRunning, setIsRunning] = useState(false);
   const [output, setOutput] = useState('');
+  const [isRunning, setIsRunning] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
   const [executionTime, setExecutionTime] = useState<number | undefined>(undefined);
   const [isDebugMode, setIsDebugMode] = useState(false);
@@ -73,19 +72,21 @@ const DebugPanel = ({ code, language }: DebugPanelProps) => {
   };
 
   return (
-    <div className="debug-panel">
-      <div className="debug-panel-header">
-        <h3>代码执行</h3>
-        <div className="debug-controls">
+    <div className="flex flex-col bg-[#1e1e1e] text-gray-100 rounded overflow-hidden w-full border border-[#333333] mb-2.5">
+      <div className="flex justify-between items-center px-3 py-2 bg-[#2d2d2d] border-b border-[#444444]">
+        <h3 className="m-0 text-sm font-medium">代码执行</h3>
+        <div className="flex gap-2">
           <button 
-            className={`debug-mode-toggle ${isDebugMode ? 'active' : ''}`}
+            className={`bg-transparent text-gray-300 border border-[#555555] rounded px-3 py-1 text-xs cursor-pointer transition-all hover:bg-[#444444] ${
+              isDebugMode ? 'bg-[#6a329f] border-[#6a329f] text-white' : ''
+            }`}
             onClick={toggleDebugMode}
             title={isDebugMode ? '关闭调试模式' : '开启调试模式'}
           >
             {isDebugMode ? '调试模式' : '运行模式'}
           </button>
           <button 
-            className="run-button" 
+            className="bg-[#0e639c] text-white border-none rounded px-3 py-1 text-xs cursor-pointer transition-all hover:bg-[#1177bb] disabled:bg-[#555555] disabled:cursor-not-allowed"
             onClick={handleRunCode}
             disabled={isRunning}
             title="运行代码"
@@ -96,8 +97,14 @@ const DebugPanel = ({ code, language }: DebugPanelProps) => {
       </div>
       
       {isDebugMode && (
-        <div className="debug-toolbar">
-          <button className="debug-button" title="设置断点" disabled={true}>断点</button>
+        <div className="flex gap-1.5 p-2 bg-[#252525] border-b border-[#444444] overflow-x-auto">
+          <button 
+            className="bg-[#333333] text-gray-300 border border-[#555555] rounded px-2 py-1 text-xs cursor-pointer transition-all hover:bg-[#444444] hover:text-white disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+            title="设置断点" 
+            disabled={true}
+          >
+            断点
+          </button>
           <button className="debug-button" title="单步执行" disabled={true}>单步</button>
           <button className="debug-button" title="步入函数" disabled={true}>步入</button>
           <button className="debug-button" title="步出函数" disabled={true}>步出</button>
@@ -106,21 +113,12 @@ const DebugPanel = ({ code, language }: DebugPanelProps) => {
         </div>
       )}
       
-      <Terminal 
-        output={formatOutput()} 
-        isRunning={isRunning} 
+      <Terminal
+        output={formatOutput()}
+        isRunning={isRunning}
         onClear={handleClearOutput}
         height="200px"
       />
-      
-      {isDebugMode && (
-        <div className="variables-panel">
-          <h4>变量</h4>
-          <div className="variables-content">
-            <p className="placeholder-text">调试时变量将显示在这里</p>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

@@ -1,8 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
-import './styles.css';
+import { useState, useRef, useEffect } from 'react';
 import { marked } from 'marked';
 import hljs from 'highlight.js';
-import 'highlight.js/styles/github-dark.css';
 
 interface AIPanelProps {
   code?: string;
@@ -79,17 +77,26 @@ const AIPanel = ({ code, language = 'javascript', onSuggestionApply }: AIPanelPr
   };
 
   return (
-    <div className="ai-panel">
-      <div className="ai-panel-header">
-        <h3>AI 代码助手</h3>
+    <div className="flex-1 flex flex-col overflow-auto bg-[#1e1e1e] border-t border-[#3d3d3d] font-sans">
+      <div className="flex items-center px-4 py-3 bg-gradient-to-r from-[#252525] to-[#2d2d2d] border-b border-[#3d3d3d]">
+        <h3 className="m-0 text-base text-white font-medium flex items-center before:content-['🤖'] before:mr-2 before:text-lg">
+          AI 代码助手
+        </h3>
       </div>
 
-      <div className="chat-container">
-        <div className="chat-history" ref={chatHistoryRef}>
+      <div className="flex-1 flex flex-col p-4 gap-2.5 bg-[#1e1e1e] text-[#d4d4d4]">
+        <div 
+          className="flex-1 flex flex-col overflow-y-auto p-4 border border-[#3d3d3d] rounded-lg bg-[#252525] scrollbar-custom"
+          ref={chatHistoryRef}
+        >
           {messages.map((msg, index) => (
             <div 
               key={index} 
-              className={`message ${msg.type === 'user' ? 'user-message' : 'bot-message'}`}
+              className={`p-3 rounded-lg mb-3 text-sm leading-relaxed ${
+                msg.type === 'user' 
+                  ? 'bg-[#2b3a55] text-white ml-5 border border-[#3d4d6b]' 
+                  : 'bg-[#252525] text-[#d4d4d4] mr-5 border border-[#3d3d3d]'
+              }`}
               dangerouslySetInnerHTML={{
                 __html: msg.type === 'user' ? msg.content : marked(msg.content)
               }}
@@ -97,23 +104,29 @@ const AIPanel = ({ code, language = 'javascript', onSuggestionApply }: AIPanelPr
           ))}
         </div>
         
-        <div className="chat-input">
+        <div className="flex gap-2.5 p-2.5 bg-[#252525] rounded-lg">
           <input
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="在这里输入你的问题..."
+            className="flex-1 px-3 py-2 bg-[#1e1e1e] border border-[#3d3d3d] rounded-md text-[#d4d4d4] text-sm outline-none transition-colors focus:border-[#0078d4]"
           />
-          <button onClick={() => sendMessage(inputValue)}>发送</button>
+          <button 
+            onClick={() => sendMessage(inputValue)}
+            className="px-5 py-2 bg-gradient-to-b from-[#0078d4] to-[#0063b1] text-white rounded-md font-medium transition-all hover:from-[#0086ef] hover:to-[#0071d1] hover:-translate-y-0.5"
+          >
+            发送
+          </button>
         </div>
 
         {suggestions.length > 0 && (
-          <div className="suggestions-container">
+          <div className="mt-2.5">
             {suggestions.map((suggestion, index) => (
               <button
                 key={index}
-                className="suggestion-button"
+                className="w-full mt-2 p-3 bg-[#252525] text-[#d4d4d4] border border-[#3d3d3d] rounded-md text-sm text-left cursor-pointer transition-all hover:bg-[#2b2b2b] hover:border-[#0078d4]"
                 onClick={() => sendMessage(suggestion)}
               >
                 {suggestion}
@@ -122,6 +135,16 @@ const AIPanel = ({ code, language = 'javascript', onSuggestionApply }: AIPanelPr
           </div>
         )}
       </div>
+
+      {/* Markdown 样式 */}
+      <style jsx global>{`
+        .bot-message p { @apply mb-2.5 last:mb-0; }
+        .bot-message a { @apply text-[#0078d4] no-underline hover:underline; }
+        .bot-message ul, .bot-message ol { @apply my-2.5 pl-5; }
+        .bot-message li { @apply my-1.5; }
+        pre { @apply p-3 bg-[#1a1a1a] rounded-md overflow-x-auto my-2.5 border border-[#3d3d3d]; }
+        code { @apply font-mono text-sm leading-relaxed; }
+      `}</style>
     </div>
   );
 };
