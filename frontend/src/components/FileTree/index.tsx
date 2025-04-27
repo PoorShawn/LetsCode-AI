@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import './styles.css';
-import { getFileTree, FileNode, createFile, deleteFile, renameFile } from '../../services/fileService';
+import { getFileTree, FileNode, createFile, deleteFile, renameFile } from '../../api/fileService';
 
 interface FileTreeProps {
   onFileSelect?: (filePath: string) => void;

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './styles.css';
-import { executeCode, CodeExecutionResult } from '../../services/codeExecutionService';
+import { executeCode, CodeExecutionResult } from '../../api/codeExecutionService';
 import Terminal from '../Terminal';
 
 interface DebugPanelProps {

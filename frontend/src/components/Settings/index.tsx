@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { themes, loadThemePreference, saveThemePreference } from '../../services/themeService';
-import { EditorConfig, loadEditorConfig, updateEditorConfigItem } from '../../services/editorConfigService';
+import { themes, loadThemePreference, saveThemePreference } from '../../api/themeService';
+import { EditorConfig, loadEditorConfig, updateEditorConfigItem } from '../../api/editorConfigService';
 import './styles.css';
 
 interface SettingsProps {

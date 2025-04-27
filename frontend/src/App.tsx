@@ -6,9 +6,9 @@ import AIPanel from './components/AIPanel';
 import SnippetPanel from './components/SnippetPanel';
 import Settings from './components/Settings';
 import DebugPanel from './components/DebugPanel';
-import { getFileContent, getFileLanguage, saveFileContent } from './services/fileService';
-import { loadThemePreference } from './services/themeService';
-import { EditorConfig, loadEditorConfig } from './services/editorConfigService';
+import { getFileContent, getFileLanguage, saveFileContent } from './api/fileService';
+import { loadThemePreference } from './api/themeService';
+import { EditorConfig, loadEditorConfig } from './api/editorConfigService';
 
 function App() {
   const [code, setCode] = useState('// 在这里开始编写代码\n');

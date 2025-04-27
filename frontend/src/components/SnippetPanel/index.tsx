@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import './styles.css';
-import { CodeSnippet, getAllSnippets, getSnippetsByLanguage } from '../../services/snippetService';
+import { CodeSnippet, getAllSnippets, getSnippetsByLanguage } from '../../api/snippetService';
 
 interface SnippetPanelProps {
   language?: string;
