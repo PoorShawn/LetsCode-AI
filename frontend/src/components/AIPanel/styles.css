@@ -1,5 +1,5 @@
 .ai-panel {
-  width: 320px;
+  width: 640px;
   height: 100%;
   background-color: #1e1e1e;
   border-left: 1px solid #3d3d3d;
@@ -7,7 +7,7 @@
   flex-direction: column;
   overflow: hidden;
   box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 .ai-panel-header {
@@ -28,175 +28,174 @@
 }
 
 .ai-panel-header h3::before {
-  content: '🧠';
+  content: '🤖';
   margin-right: 8px;
   font-size: 18px;
 }
 
-.ai-panel-content {
+.chat-container {
   flex: 1;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
   padding: 15px;
+  gap: 10px;
+  background-color: #1e1e1e;
+  color: #d4d4d4;
 }
 
-.ai-input-container {
-  display: flex;
-  margin-bottom: 15px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-.ai-input {
+.chat-history {
   flex: 1;
-  background-color: #2a2a2a;
+  overflow-y: auto;
+  padding: 15px;
   border: 1px solid #3d3d3d;
-  color: #ffffff;
-  padding: 10px 12px;
-  border-radius: 6px 0 0 6px;
-  outline: none;
+  border-radius: 8px;
+  background-color: #252525;
+}
+
+.message {
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 12px;
   font-size: 14px;
-  transition: all 0.2s ease;
+  line-height: 1.5;
 }
 
-.ai-input:focus {
+.user-message {
+  background-color: #2b3a55;
+  color: #ffffff;
+  margin-left: 20px;
+  border: 1px solid #3d4d6b;
+}
+
+.bot-message {
+  background-color: #252525;
+  color: #d4d4d4;
+  margin-right: 20px;
+  border: 1px solid #3d3d3d;
+}
+
+.chat-input {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  background-color: #252525;
+  border-radius: 8px;
+}
+
+.chat-input input {
+  flex-grow: 1;
+  padding: 12px;
+  background-color: #1e1e1e;
+  border: 1px solid #3d3d3d;
+  border-radius: 6px;
+  color: #d4d4d4;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.chat-input input:focus {
   border-color: #0078d4;
-  box-shadow: 0 0 0 2px rgba(0, 120, 212, 0.2);
 }
 
-.ai-button {
+.chat-input button {
+  padding: 10px 20px;
   background: linear-gradient(to bottom, #0078d4, #0063b1);
   color: white;
   border: none;
-  padding: 10px 16px;
-  border-radius: 0 6px 6px 0;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 14px;
   font-weight: 500;
-  transition: all 0.2s ease;
+  transition: all 0.2s;
 }
 
-.ai-button:hover {
+.chat-input button:hover {
   background: linear-gradient(to bottom, #0086ef, #0071d1);
   transform: translateY(-1px);
 }
 
-.ai-button:disabled {
-  background: #4d4d4d;
-  cursor: not-allowed;
-  transform: none;
+.suggestions-container {
+  margin-top: 10px;
 }
 
-.ai-error-message {
-  background-color: rgba(232, 17, 35, 0.1);
-  border: 1px solid rgba(232, 17, 35, 0.3);
-  color: #e83a3a;
+.suggestion-button {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
   padding: 10px 12px;
-  border-radius: 6px;
-  margin-bottom: 15px;
-  font-size: 13px;
-  display: flex;
-  align-items: center;
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-.ai-error-message::before {
-  content: '⚠️';
-  margin-right: 8px;
-  font-size: 16px;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.ai-suggestions {
-  flex: 1;
-  overflow-y: auto;
-  padding-right: 5px;
-}
-
-.ai-suggestion-item {
   background-color: #252525;
+  color: #d4d4d4;
   border: 1px solid #3d3d3d;
   border-radius: 6px;
-  margin-bottom: 15px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  transition: all 0.2s ease;
+  cursor: pointer;
+  text-align: left;
+  font-size: 14px;
+  transition: all 0.2s;
 }
 
-.ai-suggestion-item:hover {
+.suggestion-button:hover {
+  background-color: #2b2b2b;
   border-color: #0078d4;
-  transform: translateY(-2px);
 }
 
-.ai-suggestion-code {
-  margin: 0;
-  padding: 15px;
-  background-color: #1a1a1a;
-  color: #d4d4d4;
+/* 代码块样式 */
+pre {
+  padding: 12px;
+  background: #1a1a1a !important;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin: 10px 0;
+  border: 1px solid #3d3d3d;
+}
+
+code {
   font-family: 'Consolas', 'Courier New', monospace;
   font-size: 13px;
-  overflow-x: auto;
-  white-space: pre-wrap;
-  border-bottom: 1px solid #333;
+  line-height: 1.4;
 }
 
-.ai-apply-button {
-  width: 100%;
-  background: linear-gradient(to bottom, #0078d4, #0063b1);
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 500;
-  border-radius: 0 0 6px 6px;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* 滚动条样式 */
+.chat-history::-webkit-scrollbar {
+  width: 8px;
 }
 
-.ai-apply-button:hover {
-  background: linear-gradient(to bottom, #0086ef, #0071d1);
+.chat-history::-webkit-scrollbar-track {
+  background: #1e1e1e;
+  border-radius: 4px;
 }
 
-.ai-apply-button::before {
-  content: '✓';
-  margin-right: 6px;
-  font-weight: bold;
+.chat-history::-webkit-scrollbar-thumb {
+  background: #3d3d3d;
+  border-radius: 4px;
 }
 
-.ai-empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  color: #8c8c8c;
-  font-size: 14px;
-  text-align: center;
-  padding: 30px;
+.chat-history::-webkit-scrollbar-thumb:hover {
+  background: #4d4d4d;
 }
 
-.ai-empty-state::before {
-  content: '💡';
-  font-size: 32px;
-  margin-bottom: 15px;
+/* Markdown 内容样式 */
+.bot-message p {
+  margin: 0 0 10px 0;
 }
 
-@keyframes pulse {
-  0% { opacity: 0.6; }
-  50% { opacity: 1; }
-  100% { opacity: 0.6; }
+.bot-message p:last-child {
+  margin-bottom: 0;
 }
 
-.ai-empty-state.loading::before {
-  content: '⚙️';
-  animation: pulse 1.5s infinite ease-in-out;
+.bot-message a {
+  color: #0078d4;
+  text-decoration: none;
+}
+
+.bot-message a:hover {
+  text-decoration: underline;
+}
+
+.bot-message ul, .bot-message ol {
+  margin: 10px 0;
+  padding-left: 20px;
+}
+
+.bot-message li {
+  margin: 5px 0;
 }

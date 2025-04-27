@@ -47,7 +47,7 @@
   overflow: hidden;
   border-left: 1px solid #3d3d3d;
   box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
-  width: 320px; /* 增加宽度 */
+  width: 640px; /* 增加宽度 */
 }
 
 .editor-section {

@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './styles.css';
-import { getAICodeSuggestions } from '../../services/aiService';
+import { marked } from 'marked';
+import hljs from 'highlight.js';
+import 'highlight.js/styles/github-dark.css';
 
 interface AIPanelProps {
   code?: string;
@@ -9,49 +11,70 @@ interface AIPanelProps {
 }
 
 const AIPanel = ({ code, language = 'javascript', onSuggestionApply }: AIPanelProps) => {
-  const [prompt, setPrompt] = useState('');
+  const [messages, setMessages] = useState<Array<{type: 'user' | 'bot', content: string}>>([]);
+  const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const chatHistoryRef = useRef<HTMLDivElement>(null);
 
-  // 使用AI服务生成代码建议
-  const generateSuggestions = async () => {
-    if (!prompt.trim()) return;
-    
-    setIsLoading(true);
-    setError(null);
-    
+  useEffect(() => {
+    // 配置 marked
+    marked.setOptions({
+      highlight: function(code, lang) {
+        if (lang && hljs.getLanguage(lang)) {
+          return hljs.highlight(code, { language: lang }).value;
+        }
+        return hljs.highlightAuto(code).value;
+      }
+    });
+  }, []);
+
+  const sendMessage = async (message: string) => {
+    if (!message.trim()) return;
+
+    // 添加用户消息
+    setMessages(prev => [...prev, { type: 'user', content: message }]);
+    setInputValue('');
+
     try {
-      // 调用AI服务获取代码建议
-      const response = await getAICodeSuggestions({
-        prompt: prompt,
-        code: code,
-        language: language
+      // 发送到后端
+      const response = await fetch('http://localhost:5003/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: message.trim() })
       });
       
-      if (response.error) {
-        console.error('获取AI建议失败:', response.error);
-        setError(`获取建议失败: ${response.error}`);
+      const data = await response.json();
+      
+      // 添加机器人回复
+      setMessages(prev => [...prev, { type: 'bot', content: data.message }]);
+      
+      // 更新建议
+      if (data.suggestions && data.suggestions.length > 0) {
+        setSuggestions(data.suggestions);
       } else {
-        setSuggestions(response.suggestions);
+        setSuggestions([]);
       }
+
     } catch (error) {
-      console.error('AI服务调用异常:', error);
-      setError('AI服务暂时不可用，请稍后再试');
-    } finally {
-      setIsLoading(false);
+      console.error('Error:', error);
+      setMessages(prev => [...prev, { 
+        type: 'bot', 
+        content: '抱歉，服务器出现错误，请稍后重试。' 
+      }]);
     }
   };
 
-  const handleApplySuggestion = (suggestion: string) => {
-    if (onSuggestionApply) {
-      onSuggestionApply(suggestion);
+  useEffect(() => {
+    // 滚动到底部
+    if (chatHistoryRef.current) {
+      chatHistoryRef.current.scrollTop = chatHistoryRef.current.scrollHeight;
     }
-  };
+  }, [messages]);
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !isLoading && prompt.trim()) {
-      generateSuggestions();
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage(inputValue);
     }
   };
 
@@ -60,53 +83,44 @@ const AIPanel = ({ code, language = 'javascript', onSuggestionApply }: AIPanelPr
       <div className="ai-panel-header">
         <h3>AI 代码助手</h3>
       </div>
-      
-      <div className="ai-panel-content">
-        <div className="ai-input-container">
+
+      <div className="chat-container">
+        <div className="chat-history" ref={chatHistoryRef}>
+          {messages.map((msg, index) => (
+            <div 
+              key={index} 
+              className={`message ${msg.type === 'user' ? 'user-message' : 'bot-message'}`}
+              dangerouslySetInnerHTML={{
+                __html: msg.type === 'user' ? msg.content : marked(msg.content)
+              }}
+            />
+          ))}
+        </div>
+        
+        <div className="chat-input">
           <input
             type="text"
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="输入你的问题或需求..."
-            className="ai-input"
+            placeholder="在这里输入你的问题..."
           />
-          <button 
-            onClick={generateSuggestions}
-            disabled={isLoading || !prompt.trim()}
-            className="ai-button"
-          >
-            {isLoading ? '生成中...' : '生成建议'}
-          </button>
+          <button onClick={() => sendMessage(inputValue)}>发送</button>
         </div>
-        
-        {error && (
-          <div className="ai-error-message">
-            {error}
+
+        {suggestions.length > 0 && (
+          <div className="suggestions-container">
+            {suggestions.map((suggestion, index) => (
+              <button
+                key={index}
+                className="suggestion-button"
+                onClick={() => sendMessage(suggestion)}
+              >
+                {suggestion}
+              </button>
+            ))}
           </div>
         )}
-        
-        <div className="ai-suggestions">
-          {suggestions.length > 0 ? (
-            suggestions.map((suggestion, index) => (
-              <div key={index} className="ai-suggestion-item">
-                <pre className="ai-suggestion-code">{suggestion}</pre>
-                <button 
-                  onClick={() => handleApplySuggestion(suggestion)}
-                  className="ai-apply-button"
-                >
-                  应用此建议
-                </button>
-              </div>
-            ))
-          ) : (
-            <div className={`ai-empty-state ${isLoading ? 'loading' : ''}`}>
-              {isLoading ? 
-                '正在生成建议...' : 
-                '在上方输入你的问题，AI将为你生成代码建议'}
-            </div>
-          )}
-        </div>
       </div>
     </div>
   );

@@ -103,10 +103,10 @@ function App() {
             language={language}
             onSuggestionApply={handleApplySuggestion}
           />
-          <SnippetPanel 
+          {/* <SnippetPanel 
             language={language}
             onSnippetSelect={handleApplySuggestion}
-          />
+          /> */}
         </div>
       </main>
       <Settings 
