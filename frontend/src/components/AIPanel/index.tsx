@@ -77,14 +77,14 @@ const AIPanel = ({ code, language = 'javascript', onSuggestionApply }: AIPanelPr
   };
 
   return (
-    <div className="flex-1 flex flex-col overflow-auto bg-[#1e1e1e] border-t border-[#3d3d3d] font-sans">
-      <div className="flex items-center px-4 py-3 bg-gradient-to-r from-[#252525] to-[#2d2d2d] border-b border-[#3d3d3d]">
+    <div className="relative flex-1 flex flex-col overflow-y-scroll bg-[#1e1e1e] border-t border-[#3d3d3d] font-sans">
+      <div className="fixed w-full flex items-center px-4 py-3 bg-gradient-to-r from-[#252525] to-[#2d2d2d] border-b border-[#3d3d3d]">
         <h3 className="m-0 text-base text-white font-medium flex items-center before:content-['🤖'] before:mr-2 before:text-lg">
           AI 代码助手
         </h3>
       </div>
 
-      <div className="flex-1 flex flex-col p-4 gap-2.5 bg-[#1e1e1e] text-[#d4d4d4]">
+      <div className="flex-1 flex flex-col pb-16 p-4 pt-16 gap-2.5 bg-[#1e1e1e] text-[#d4d4d4]">
         <div 
           className="flex-1 flex flex-col overflow-y-auto p-4 border border-[#3d3d3d] rounded-lg bg-[#252525] scrollbar-custom"
           ref={chatHistoryRef}
@@ -104,7 +104,7 @@ const AIPanel = ({ code, language = 'javascript', onSuggestionApply }: AIPanelPr
           ))}
         </div>
         
-        <div className="flex gap-2.5 p-2.5 bg-[#252525] rounded-lg">
+        <div className="fixed w-full bottom-0 flex gap-2.5 p-2.5 bg-[#252525] rounded-lg">
           <input
             type="text"
             value={inputValue}
