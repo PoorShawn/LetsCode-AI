@@ -41,7 +41,6 @@ def chat():
 
         # Choose API 
         chat_response = chat_with_coze(prompt)
-        chat_reply = chat_response.get('ai_reply')
 
         '''
         # 确保 chat_response 是str
@@ -53,9 +52,7 @@ def chat():
             return jsonify({"error": "AI 响应格式错误"}), 500
         '''
         print('chat_response:',chat_response)
-        print("Final response to client:", chat_reply)
-        print({"message": chat_reply})
-        return jsonify({"message": chat_reply})  # ✅ 确保返回 JSON
+        return jsonify({"message": 'ok'})  # ✅ 确保返回 JSON
 
 
     except Exception as e:
@@ -80,6 +77,10 @@ def chat_with_coze(prompt):
 
     print("Sending request to Coze:", url)
     print("Payload:", payload)
+    response = requests.post(url, headers=headers, json=payload)
+    response_json = response.json()
+    conversationID = response_json['data']['conversation_id']
+    print("conversationID:"+conversationID)
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=5003)
