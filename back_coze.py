@@ -1,0 +1,156 @@
+
+import json
+from flask import Flask, jsonify, request
+import requests 
+from flask_cors import CORS 
+bot_id = '7512102532383539240'
+
+url = "https://api.coze.cn/v3/chat"
+s_token = "pat_CTlVXm3toVYeJT8OC0QPK8B5hNbRFGxvYS84gC4rzKw1irGpatdZnIbmSpkgHVB6"  # ✅ 确保使用最新的 Personal Access Token
+headers = {
+        "Authorization": f"Bearer {s_token}",
+        "Content-Type": "application/json"
+    }
+
+app = Flask(__name__)
+# 启用跨域请求支持
+CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
+
+@app.route('/api/knit', methods=['POST'])
+
+
+def chat():
+    
+    if request.method == 'OPTIONS':
+        return '', 200  # 处理预检请求，返回 200 状态码
+    try:
+        print("Received POST request to /api/chat")
+
+        # 获取 JSON 数据
+        data = request.get_json(force=True)
+        print("Received JSON:", data)
+
+        if not data:
+            return "请求失败: 没有收到数据", 400
+
+        # 获取 message 字段
+        prompt = data.get('message')
+        print("Extracted prompt:", prompt)  # 确保 prompt 不是 None
+
+        if not prompt:
+            return jsonify({"error": "输入内容为空"}), 400
+
+        # Choose API 
+        chat_response = chat_with_coze(prompt)
+        chat_reply = chat_response.get('ai_reply')
+
+        '''
+        # 确保 chat_response 是str
+        if isinstance(chat_reply, dict) and "error" in chat_reply:
+            return jsonify({"error": chat_reply["error"]}), 500
+        
+        if not isinstance(chat_reply, str):
+            print("Error: chat_reply did not return a string.")
+            return jsonify({"error": "AI 响应格式错误"}), 500
+        '''
+        print('chat_response:',chat_response)
+        print("Final response to client:", chat_reply)
+        print({"message": chat_reply})
+        return jsonify({"message": chat_reply})  # ✅ 确保返回 JSON
+
+
+    except Exception as e:
+        print("Error occurred:", str(e))
+        return jsonify({"error": str(e)}), 500
+    
+
+def chat_with_coze(prompt):
+
+    payload = {
+        "bot_id": bot_id,
+        "user_id": "123",  # 可以改成用户 ID
+        "stream": False,
+        "auto_save_history": True,
+        "additional_messages": [{
+            "content": prompt,
+            "content_type": "text",
+            "role": "user",
+            "type": "question"
+        }]
+    }
+
+    print("Sending request to Coze:", url)
+    print("Payload:", payload)
+
+    response = requests.post(url, headers=headers, json=payload)
+
+    print("Coze API Response Status Code:", response.status_code)
+    print("Coze API Response:", response.text)
+
+    if response.status_code == 200:
+        response_json = response.json()
+
+        # 检查 API 是否返回错误
+        if response_json.get("code") != 0:
+            return f"Coze API Error: {response_json.get('msg')}"
+
+        # 提取 AI 生成的回复
+        conversation_status = response_json["data"]["status"]
+
+        if not conversation_status == "in_progress":
+            return "服务器不在线。"  # ✅ 确保返回字符串
+        
+
+        # 这里添加获取 AI 回复的逻辑
+        ai_reply = get_coze_response(response_json['data']['conversation_id'], response_json['data']['id'])
+
+        return {'ai_reply':ai_reply}  # ✅ 返回 AI 生成的文本
+    else:
+        return f"Failed to chat with Coze API. Status code: {response.status_code}"
+    
+def get_coze_response(conversationID,chatID):
+    print('获取主回复')
+    import time;
+    params = { "bot_id": bot_id,"task_id": chatID }
+    getChatStatusUrl = url+f'/retrieve?conversation_id={conversationID}&chat_id={chatID}&'
+    print('botID:'+bot_id)
+    print('conversationID:'+conversationID)
+    print('chatID:'+chatID)
+    while True:
+        response = requests.get(getChatStatusUrl, headers=headers, params=None)
+        if response.status_code == 200:
+            response_data = response.json()
+            #print(f"response_data:\n{json.dumps(response_data,indent=4, ensure_ascii=False)}")
+            status = response_data['data']['status']
+            if status == 'completed':
+                print(f"任务完成，状态: {status}")
+                # 从响应中提取实际的应答内容
+                getChatAnswerUrl = url+f'/message/list?chat_id={chatID}&conversation_id={conversationID}'
+                response = requests.get(getChatAnswerUrl, headers=headers, params=params)
+                if response.status_code == 200:
+                    print("获取聊天记录成功,200")
+                    #print(response.text)
+                    response_json = response.json()
+                    data = response_json.get("data", [])
+
+                    if not isinstance(data, list):
+                        return "Error: AI 返回了错误的数据格式。"
+
+                # ✅ 遍历 messages，提取 `role: assistant` 且 `type: answer` 的 `content`
+                    for message in data:
+                        if isinstance(message,dict) and message.get("role") == "assistant" and message.get("type") == "answer":
+                            return message.get("content", "无返回内容")
+                break
+            else:
+                print(f"任务仍在处理中，状态: {status}")
+                time.sleep(1)  # 等待5秒后再次检查
+        else:
+            print(f"请求失败，状态码: {response.status_code}")
+            break
+    return False
+if __name__ == "__main__":
+    app.run(debug=True, host='0.0.0.0', port=5003)
+
+
+    
