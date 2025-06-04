@@ -35,4 +35,14 @@ export default defineConfig({
       },
     },
   },
+  server: {
+    port: 5173,
+    proxy: {
+      '/api': {
+        target: 'http://172.0.0.1:8020', // 后端服务器地址
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '/api')
+      }
+    },
+  },
 })
