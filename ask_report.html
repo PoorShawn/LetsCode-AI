@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>API - 代码补全</title>
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .message { padding: 10px; border-radius: 5px; margin-bottom: 10px; }
+        pre { padding: 10px; background: #282c34; color: white; border-radius: 5px; overflow-x: auto; }
+        code { font-family: monospace; }
+        .suggestion-button:hover { background-color: #e0e0e0; }
+    </style>
+    </head>
+    <body>
+        <button id="toggle-float-btn" style="position: fixed; top: 20px; right: 20px; z-index: 1001;">切换悬浮</button>
+        <div id="chat-container">
+            <div id="chat-history"></div>
+            <div id="chat-input">
+                <input type="text" id="user-input" placeholder="在这里输入你的问题...">
+                <button id="send-button">发送</button>
+            </div>
+        </div>
+
+        <script>
+            const chatHistory = document.getElementById('chat-history');
+            const userInput = document.getElementById('user-input');
+            const sendButton = document.getElementById('send-button');
+
+            function sendMessage(message) {
+                if (!message.trim()) return;
+                
+                // 用户消息
+                const userMessageElement = document.createElement('div');
+                userMessageElement.classList.add('message', 'user-message');
+                userMessageElement.textContent = message;
+                chatHistory.appendChild(userMessageElement);
+
+                // 添加“思考中...”占位 bot 回复
+                const placeholderBot = document.createElement('div');
+                placeholderBot.classList.add('message', 'bot-message');
+                placeholderBot.innerHTML = '<em>🤖 正在思考中...</em>';
+                chatHistory.appendChild(placeholderBot);
+                // 滚动到底部
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+
+
+                // 发送到后端
+                fetch('http://localhost:5003/api/report', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: message.trim() })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // 替换“正在思考中...”的内容
+                    placeholderBot.innerHTML = marked.parse(data.message);
+
+                    // 让代码高亮
+                    document.querySelectorAll('pre code').forEach((block) => {
+                        hljs.highlightElement(block);
+                    });
+
+                    // 滚动到底部
+                    chatHistory.scrollTop = chatHistory.scrollHeight;
+                })
+                .catch(error => console.error('Error:', error));
+                
+                // 清空输入框
+                userInput.value = '';
+            }
+
+            // 点击按钮发送
+            sendButton.addEventListener('click', () => sendMessage(userInput.value));
+
+            // 回车键发送
+            userInput.addEventListener('keypress', (event) => {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    sendMessage(userInput.value);
+                }
+            });
+
+            const floatToggleBtn = document.getElementById('toggle-float-btn');
+            const chatContainer = document.getElementById('chat-container');
+
+            floatToggleBtn.addEventListener('click', () => {
+                chatContainer.classList.toggle('floating');
+            });
+        </script>
+
+        <style>
+            #chat-container {
+                width: 100%;
+                max-width: 600px;
+                margin: 0 auto;
+                padding: 20px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                display: flex;
+                flex-direction: column;
+            }
+
+            #chat-history {
+                height: 600px;
+                overflow-y: scroll;
+                border: 1px solid #ccc;
+                padding: 10px;
+                border-radius: 5px;
+                margin-bottom: 10px;
+
+            }
+
+            .user-message {
+                background-color: #e0f7fa;
+                padding: 10px;
+                margin-bottom: 10px;
+                border-radius: 5px;
+            }
+
+            .bot-message {
+                background-color: #f8f9fa;
+                padding: 10px;
+                margin-bottom: 10px;
+                border-radius: 5px;
+            }
+
+            #chat-input {
+                display: flex;
+                gap: 10px;
+            }
+
+            #user-input {
+                flex-grow: 1;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+
+            .suggestion-button {
+                display: block;
+                width: 100%;
+                margin-top: 5px;
+                padding: 8px;
+                background-color: #f0f0f0;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            .suggestion-button:hover {
+                background-color: #e0e0e0;
+            }
+            .floating {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                width: 400px;
+                height: 600px;
+                z-index: 1000;
+                background-color: white;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                display: flex;
+                flex-direction: column;
+                }
+        </style>
+    </body>
+</html>
