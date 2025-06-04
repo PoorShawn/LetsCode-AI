@@ -7,7 +7,7 @@ bot_id = '7488894264207048738'
 #"7481182000779722802"
 
 url = "https://api.coze.cn/v3/chat"
-s_token = "pat_Du3vZq5b7dtoJsi2RKQFqwFCm1cRqCSnzgJ54D43nOgNzm7jBmXrE4sWzmkxbJG5"  # ✅ 确保使用最新的 Personal Access Token
+s_token = "pat_CTlVXm3toVYeJT8OC0QPK8B5hNbRFGxvYS84gC4rzKw1irGpatdZnIbmSpkgHVB6"  # ✅ 确保使用最新的 Personal Access Token
 headers = {
         "Authorization": f"Bearer {s_token}",
         "Content-Type": "application/json"
@@ -52,18 +52,18 @@ def chat():
         chat_follow_up_3 = chat_follow_up_set.get('3')
 
         '''
-        # 确保 chat_response 是字符串
+        # 确保 chat_response 是str
         if isinstance(chat_reply, dict) and "error" in chat_reply:
             return jsonify({"error": chat_reply["error"]}), 500
-
+        
         if not isinstance(chat_reply, str):
             print("Error: chat_reply did not return a string.")
             return jsonify({"error": "AI 响应格式错误"}), 500
         '''
-        #print('chat_response:',chat_response)
-        #print("Final response to client:", chat_reply)
+        print('chat_response:',chat_response)
+        print("Final response to client:", chat_reply)
         print({"message": chat_reply,'suggestions':[chat_follow_up_1, chat_follow_up_2, chat_follow_up_3]})
-        return jsonify({"message": chat_reply,})  # ✅ 确保返回 JSON
+        return jsonify({"message": chat_reply,"suggestions":[chat_follow_up_1, chat_follow_up_2, chat_follow_up_3]})  # ✅ 确保返回 JSON
 
 
     except Exception as e:
@@ -86,13 +86,13 @@ def chat_with_coze(prompt):
         }]
     }
 
-    #print("Sending request to Coze:", url)
-    #print("Payload:", payload)
+    print("Sending request to Coze:", url)
+    print("Payload:", payload)
 
     response = requests.post(url, headers=headers, json=payload)
 
-    #print("Coze API Response Status Code:", response.status_code)
-    #print("Coze API Response:", response.text)
+    print("Coze API Response Status Code:", response.status_code)
+    print("Coze API Response:", response.text)
 
     if response.status_code == 200:
         response_json = response.json()
@@ -106,6 +106,7 @@ def chat_with_coze(prompt):
 
         if not conversation_status == "in_progress":
             return "服务器不在线。"  # ✅ 确保返回字符串
+        
 
         # 这里添加获取 AI 回复的逻辑
         ai_reply = get_coze_response(response_json['data']['conversation_id'], response_json['data']['id'])
@@ -199,37 +200,6 @@ def get_coze_follow_up(conversationID,chatID):
             break
     return False
 
-'''
-def chat_with_moonshot(prompt):
-    # 调用 Moonshot API
-    api_url = "https://api.moonshot.cn/v1/chat/completions"  
-    api_key = "sk-ghjo6uesmh9FCF5yuPlNBxzblgMEXLH6KBDzPWvCDeD9Ko0Q" 
-    payload = {
-        "model": "moonshot-v1-8k",
-        "messages": [{
-            "role": "user",
-            "content": f"{prompt}"
-        }]
-    }
-    # 设置请求头
-    headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
-
-    print("Sending request to Moonshot:", api_url)
-    print("Payload:", payload)
-
-    response = requests.post(api_url, json=payload, headers=headers)
-
-    print("Moonshot API Response Status Code:", response.status_code)
-    print("Moonshot API Response Content:", response.text)
-
-    if response.status_code == 200:
-        response_json = response.json()
-        message_content = response_json.get("choices", [{}])[0].get("message", {}).get("content", "")
-        if not message_content:
-            return {"error": "Moonshot API 返回了空内容"}
-        return message_content  # ✅ 确保返回字符串
-    else:
-        return {"error": f"Failed to chat with Moonshot API. Status code: {response.status_code}"}'''
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=5003)
