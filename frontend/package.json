@@ -13,11 +13,14 @@
     "@monaco-editor/loader": "^1.5.0",
     "@monaco-editor/react": "^4.7.0",
     "@tailwindcss/vite": "^4.1.4",
+    "antd": "^5.25.4",
+    "axios": "^1.9.0",
     "highlight.js": "^11.11.1",
     "marked": "^15.0.11",
     "monaco-editor": "^0.52.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-router-dom": "^7.6.2",
     "tailwindcss": "^4.1.4"
   },
   "devDependencies": {
