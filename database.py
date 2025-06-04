@@ -81,6 +81,9 @@ def chat_with_coze(prompt):
     response_json = response.json()
     conversationID = response_json['data']['conversation_id']
     print("conversationID:"+conversationID)
+    chatID = response_json['data']['id']
+    print("chatID:"+chatID)
+
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=5003)
