@@ -1,6 +1,14 @@
-import { useState, useEffect } from 'react';
-import { themes, loadThemePreference, saveThemePreference } from '../../api/themeService';
-import { EditorConfig, loadEditorConfig, updateEditorConfigItem } from '../../api/editorConfigService';
+import { useState, useEffect } from "react";
+import {
+  themes,
+  loadThemePreference,
+  saveThemePreference,
+} from "../../../../api/themeService";
+import {
+  EditorConfig,
+  loadEditorConfig,
+  updateEditorConfigItem,
+} from "../../../../api/editorConfigService";
 
 interface SettingsProps {
   onThemeChange: (themeId: string) => void;
@@ -9,9 +17,18 @@ interface SettingsProps {
   onClose: () => void;
 }
 
-const Settings = ({ onThemeChange, onConfigChange, isOpen, onClose }: SettingsProps) => {
-  const [currentTheme, setCurrentTheme] = useState<string>(loadThemePreference());
-  const [editorConfig, setEditorConfig] = useState<EditorConfig>(loadEditorConfig());
+const Settings = ({
+  onThemeChange,
+  onConfigChange,
+  isOpen,
+  onClose,
+}: SettingsProps) => {
+  const [currentTheme, setCurrentTheme] = useState<string>(
+    loadThemePreference()
+  );
+  const [editorConfig, setEditorConfig] = useState<EditorConfig>(
+    loadEditorConfig()
+  );
 
   useEffect(() => {
     // 当设置面板打开时，加载最新的配置
@@ -44,7 +61,7 @@ const Settings = ({ onThemeChange, onConfigChange, isOpen, onClose }: SettingsPr
       <div className="bg-[#252526] text-white rounded-lg shadow-xl w-[500px] max-w-[90vw]">
         <div className="flex justify-between items-center px-6 py-4 border-b border-[#3d3d3d]">
           <h3 className="text-lg font-medium">编辑器设置</h3>
-          <button 
+          <button
             className="text-2xl text-gray-400 hover:text-white bg-transparent border-none cursor-pointer"
             onClick={onClose}
           >
@@ -57,7 +74,10 @@ const Settings = ({ onThemeChange, onConfigChange, isOpen, onClose }: SettingsPr
             <div>
               <h4 className="text-sm font-medium mb-4">主题</h4>
               <div className="space-y-2">
-                <label htmlFor="theme-select" className="block text-sm text-gray-300">
+                <label
+                  htmlFor="theme-select"
+                  className="block text-sm text-gray-300"
+                >
                   选择主题：
                 </label>
                 <select
@@ -88,7 +108,9 @@ const Settings = ({ onThemeChange, onConfigChange, isOpen, onClose }: SettingsPr
                     min="8"
                     max="32"
                     value={editorConfig.fontSize}
-                    onChange={(e) => handleConfigChange('fontSize', parseInt(e.target.value))}
+                    onChange={(e) =>
+                      handleConfigChange("fontSize", parseInt(e.target.value))
+                    }
                     className="w-20 px-2 py-1 bg-[#3c3c3c] border border-[#3d3d3d] rounded text-white focus:outline-none focus:border-[#0e639c]"
                   />
                 </div>
@@ -102,7 +124,9 @@ const Settings = ({ onThemeChange, onConfigChange, isOpen, onClose }: SettingsPr
                     min="1"
                     max="8"
                     value={editorConfig.tabSize}
-                    onChange={(e) => handleConfigChange('tabSize', parseInt(e.target.value))}
+                    onChange={(e) =>
+                      handleConfigChange("tabSize", parseInt(e.target.value))
+                    }
                     className="settings-input"
                   />
                 </div>
@@ -112,7 +136,12 @@ const Settings = ({ onThemeChange, onConfigChange, isOpen, onClose }: SettingsPr
                   <select
                     id="word-wrap"
                     value={editorConfig.wordWrap}
-                    onChange={(e) => handleConfigChange('wordWrap', e.target.value as 'on' | 'off')}
+                    onChange={(e) =>
+                      handleConfigChange(
+                        "wordWrap",
+                        e.target.value as "on" | "off"
+                      )
+                    }
                     className="settings-select"
                   >
                     <option value="off">关闭</option>
@@ -126,7 +155,9 @@ const Settings = ({ onThemeChange, onConfigChange, isOpen, onClose }: SettingsPr
                     id="minimap"
                     type="checkbox"
                     checked={editorConfig.minimap}
-                    onChange={(e) => handleConfigChange('minimap', e.target.checked)}
+                    onChange={(e) =>
+                      handleConfigChange("minimap", e.target.checked)
+                    }
                     className="settings-checkbox"
                   />
                 </div>
@@ -138,8 +169,8 @@ const Settings = ({ onThemeChange, onConfigChange, isOpen, onClose }: SettingsPr
                     value={editorConfig.lineNumbers}
                     onChange={(e) =>
                       handleConfigChange(
-                        'lineNumbers',
-                        e.target.value as 'on' | 'off' | 'relative'
+                        "lineNumbers",
+                        e.target.value as "on" | "off" | "relative"
                       )
                     }
                     className="settings-select"
@@ -156,7 +187,9 @@ const Settings = ({ onThemeChange, onConfigChange, isOpen, onClose }: SettingsPr
                     id="auto-indent"
                     type="checkbox"
                     checked={editorConfig.autoIndent}
-                    onChange={(e) => handleConfigChange('autoIndent', e.target.checked)}
+                    onChange={(e) =>
+                      handleConfigChange("autoIndent", e.target.checked)
+                    }
                     className="settings-checkbox"
                   />
                 </div>

@@ -77,7 +77,7 @@ const AIPanel = ({ code, language = 'javascript', onSuggestionApply }: AIPanelPr
   };
 
   return (
-    <div className="relative flex-1 flex flex-col overflow-y-scroll bg-[#1e1e1e] border-t border-[#3d3d3d] font-sans">
+    <div className="relative flex-1 flex flex-col w-full h-full bg-[#1e1e1e] border-t border-[#3d3d3d]">
       <div className="fixed w-full flex items-center px-4 py-3 bg-gradient-to-r from-[#252525] to-[#2d2d2d] border-b border-[#3d3d3d]">
         <h3 className="m-0 text-base text-white font-medium flex items-center before:content-['🤖'] before:mr-2 before:text-lg">
           AI 代码助手
