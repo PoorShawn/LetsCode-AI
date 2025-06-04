@@ -6,6 +6,7 @@ import UnauthorizedPage from './pages/auth/UnauthorizedPage';
 import ProtectedRoute from './router/ProtectedRoute'; 
 import StudentDashboard from './pages/student/StudentDashboard'; 
 import TeacherDashboard from './pages/teacher/TeacherDashboard'; 
+import Coder from './views/coder';
 
 // Placeholder components for role-specific dashboards
 const MainApplicationPlaceholder = () => {
@@ -57,6 +58,15 @@ function App() {
             element={
               // <ProtectedRoute allowedRoles={['teacher']}>
                 <TeacherDashboard />
+              // </ProtectedRoute>
+            }
+          />
+
+          <Route 
+            path="/student/coder"
+            element={
+              // <ProtectedRoute allowedRoles={['teacher']}>
+                <Coder />
               // </ProtectedRoute>
             }
           />

@@ -48,6 +48,36 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '/students')
       },
+      '/curriculum': {
+        target: 'http://127.0.0.1:8030', // 后端服务器地址
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '/curriculum')
+      },
+      '/enrollment': {
+        target: 'http://127.0.0.1:8040', // 后端服务器地址
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '/enrollment')
+      },
+      '/history': {
+        target: 'http://127.0.0.1:8050', // 后端服务器地址
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '/history')
+      },
+      '/session': {
+        target: 'http://127.0.0.1:8050', // 后端服务器地址
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '/session')
+      },
+      '/task': {
+        target: 'http://127.0.0.1:8050', // 后端服务器地址
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '/task')
+      },
+      '/learningAnalytics': {
+        target: 'http://127.0.0.1:8060', // 后端服务器地址
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '/learningAnalytics')
+      },
     },
   },
 })

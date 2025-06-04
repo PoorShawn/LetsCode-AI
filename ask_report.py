@@ -1,9 +1,8 @@
-
 import json
 from flask import Flask, jsonify, request
 import requests 
 from flask_cors import CORS 
-bot_id = '7512102532383539240'
+bot_id = '7512129992533557289'
 
 url = "https://api.coze.cn/v3/chat"
 s_token = "pat_CTlVXm3toVYeJT8OC0QPK8B5hNbRFGxvYS84gC4rzKw1irGpatdZnIbmSpkgHVB6"  # ✅ 确保使用最新的 Personal Access Token
@@ -17,8 +16,7 @@ app = Flask(__name__)
 CORS(app)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-@app.route('/api/knit', methods=['POST'])
-
+@app.route('/api/report', methods=['POST'])
 
 def chat():
     
@@ -35,7 +33,7 @@ def chat():
             return "请求失败: 没有收到数据", 400
 
         # 获取 message 字段
-        prompt = data.get('message')
+        prompt = '基于数据库所有内容，生成分析结果'
         print("Extracted prompt:", prompt)  # 确保 prompt 不是 None
 
         if not prompt:
@@ -150,7 +148,7 @@ def get_coze_response(conversationID,chatID):
             break
     return False
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=5004)
+    app.run(debug=True, host='0.0.0.0', port=5005)
 
 
     
