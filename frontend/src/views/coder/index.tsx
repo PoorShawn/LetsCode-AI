@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Splitter } from 'antd';
 import { EditorConfig, loadEditorConfig } from '../../api/editorConfigService';
 import { saveFileContent, getFileContent, getFileLanguage } from '../../api/fileService';
@@ -8,6 +8,7 @@ import DebugPanel from './components/DebugPanel';
 import CodeEditor from './components/Editor';
 import FileTree from './components/FileTree';
 import Settings from './components/Settings';
+import type { editor } from 'monaco-editor';
 
 function Coder() {
   const [code, setCode] = useState('// 在这里开始编写代码\n');
@@ -16,6 +17,7 @@ function Coder() {
   const [theme, setTheme] = useState(loadThemePreference());
   const [editorConfig, setEditorConfig] = useState<EditorConfig>(loadEditorConfig());
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
 
   const handleCodeChange = (value: string | undefined) => {
     if (value !== undefined) {
@@ -28,9 +30,46 @@ function Coder() {
   };
   
   const handleApplySuggestion = (suggestion: string) => {
-    setCode(suggestion);
+    if (!editorRef.current) return;
+
+    const editor = editorRef.current;
+    const selection = editor.getSelection();
+    
+    if (selection) {
+      // 如果有选中的文本，替换选中的部分
+      const { startLineNumber, startColumn, endLineNumber, endColumn } = selection;
+      editor.executeEdits('ai-suggestion', [{
+        range: {
+          startLineNumber,
+          startColumn,
+          endLineNumber,
+          endColumn
+        },
+        text: suggestion,
+        forceMoveMarkers: true
+      }]);
+    } else {
+      // 如果没有选中文本，在当前光标位置插入
+      const position = editor.getPosition();
+      if (position) {
+        editor.executeEdits('ai-suggestion', [{
+          range: {
+            startLineNumber: position.lineNumber,
+            startColumn: position.column,
+            endLineNumber: position.lineNumber,
+            endColumn: position.column
+          },
+          text: suggestion,
+          forceMoveMarkers: true
+        }]);
+      }
+    }
+
+    // 更新代码状态
+    setCode(editor.getValue());
+    // 如果有当前文件，保存更新
     if (currentFile) {
-      saveFileContent(currentFile, suggestion);
+      saveFileContent(currentFile, editor.getValue());
     }
   };
 
@@ -54,6 +93,10 @@ function Coder() {
 
   const toggleSettings = () => {
     setIsSettingsOpen(!isSettingsOpen);
+  };
+
+  const handleEditorDidMount = (editor: editor.IStandaloneCodeEditor) => {
+    editorRef.current = editor;
   };
 
   return (
@@ -82,6 +125,7 @@ function Coder() {
             onChange={handleCodeChange}
             language={language}
             theme={theme}
+            onMount={handleEditorDidMount}
             options={{
               fontSize: editorConfig.fontSize,
               tabSize: editorConfig.tabSize,
@@ -109,11 +153,8 @@ function Coder() {
             code={code}
             language={language}
             onSuggestionApply={handleApplySuggestion}
+            editor={editorRef.current}
           />
-          {/* <SnippetPanel 
-            language={language}
-            onSnippetSelect={handleApplySuggestion}
-          /> */}
         </div>
         </Splitter.Panel>
         </Splitter>

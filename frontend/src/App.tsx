@@ -7,6 +7,10 @@ import ProtectedRoute from './router/ProtectedRoute';
 import StudentDashboard from './pages/student/StudentDashboard'; 
 import TeacherDashboard from './pages/teacher/TeacherDashboard'; 
 import Coder from './views/coder';
+import CourseList from './pages/student/CourseList';
+import CourseDetail from './pages/student/CourseDetail';
+import AssignmentList from './pages/student/AssignmentList';
+import AssignmentDetail from './pages/student/AssignmentDetail';
 
 // Placeholder components for role-specific dashboards
 const MainApplicationPlaceholder = () => {
@@ -38,9 +42,9 @@ function App() {
           <Route 
             path="/" 
             element={
-              <ProtectedRoute>
+              // <ProtectedRoute>
                 <MainApplicationPlaceholder />
-              </ProtectedRoute>
+              // </ProtectedRoute>
             } 
           />
 
@@ -53,6 +57,41 @@ function App() {
               // </ProtectedRoute>
             }
           />
+
+          {/* Student routes */}
+          <Route 
+            path="/student/courses"
+            element={
+              // <ProtectedRoute allowedRoles={['student']}>
+                <CourseList />
+              // </ProtectedRoute>
+            }
+          />
+          <Route 
+            path="/student/course/:courseId"
+            element={
+              // <ProtectedRoute allowedRoles={['student']}>
+                <CourseDetail />
+              // </ProtectedRoute>
+            }
+          />
+          <Route 
+            path="/student/assignments"
+            element={
+              // <ProtectedRoute allowedRoles={['student']}>
+                <AssignmentList />
+              // </ProtectedRoute>
+            }
+          />
+          <Route 
+            path="/student/assignment/:assignmentId"
+            element={
+              // <ProtectedRoute allowedRoles={['student']}>
+                <AssignmentDetail />
+              // </ProtectedRoute>
+            }
+          />
+
           <Route 
             path="/teacher/dashboard"
             element={
@@ -65,7 +104,7 @@ function App() {
           <Route 
             path="/student/coder"
             element={
-              // <ProtectedRoute allowedRoles={['teacher']}>
+              // <ProtectedRoute allowedRoles={['student']}>
                 <Coder />
               // </ProtectedRoute>
             }
@@ -76,8 +115,7 @@ function App() {
           <Route 
             path="*" 
             element={
-              <ProtectedRoute> 
-                {/* If logged in and path not found, redirect to their main page or a specific 404 */}
+              <ProtectedRoute>
                 <Navigate to="/" replace /> 
               </ProtectedRoute>
             } 

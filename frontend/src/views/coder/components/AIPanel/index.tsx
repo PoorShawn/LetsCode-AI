@@ -35,7 +35,7 @@ const AIPanel = ({ code, language = 'javascript', onSuggestionApply }: AIPanelPr
 
     try {
       // 发送到后端
-      const response = await fetch('http://localhost:5003/api/chat', {
+      const response = await fetch('http://localhost:5006/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: message.trim() })

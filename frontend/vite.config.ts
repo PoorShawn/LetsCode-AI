@@ -78,6 +78,10 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '/learningAnalytics')
       },
+      // '/api/knit': {
+      //   target: 'http://localhost:5004', // 后端服务器地址
+      //   changeOrigin: true,
+      // },
     },
   },
 })
