@@ -40,8 +40,10 @@ public interface TeacherMapper {
     int deleteTeacher(int teacherId);
 
     // 获取密码(用于登录验证)
-    @Select("SELECT password FROM teacher WHERE teacher_id = #{teacherId}")
-    String getPasswordByID(int teacherId);
+    //@Select("SELECT password FROM teacher WHERE teacher_id = #{teacherId}")
+    //String getPasswordByID(int teacherId);
+    @Select("SELECT * FROM teacher WHERE Teacher_Email = #{TeacherEmail} AND password = #{password}")
+    Teacher login(@Param("TeacherEmail") String TeacherEmail, @Param("password") String password);
 
     // 搜索教师
     @Select("<script>" +

@@ -15,11 +15,13 @@ public interface TeacherServiceI {
 
     void deleteTeacher(int teacherId);
 
-    String getPasswordByID(int teacherId);
+    //String getPasswordByID(int teacherId);
 
     List<TeacherDto> searchTeachers(String name, String department);
 
     Teacher registerTeacher(Teacher teacherRegistForm);
 
     boolean updatePassword(int teacherId, String newPassword);
+
+    Teacher login(String TeacherEmail, String password);
 }

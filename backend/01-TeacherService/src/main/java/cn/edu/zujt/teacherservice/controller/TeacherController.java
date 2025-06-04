@@ -66,9 +66,13 @@ public class TeacherController {
     }
 
     // 教师登录
-    @GetMapping("/login/{teacherId}")
-    public String teacherLogin(@PathVariable("teacherId") int teacherId) {
-        return teacherService.getPasswordByID(teacherId);
+    //@GetMapping("/login/{teacherId}")
+    //public String teacherLogin(@PathVariable("teacherId") int teacherId) {
+    //    return teacherService.getPasswordByID(teacherId);
+    //}
+    @PostMapping("/login")
+    public Teacher login(@RequestParam String TeacherEmail, @RequestParam String password) {
+        return teacherService.login(TeacherEmail, password);
     }
 
     // 搜索教师（按姓名或其他条件）

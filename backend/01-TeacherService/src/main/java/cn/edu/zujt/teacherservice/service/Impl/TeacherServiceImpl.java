@@ -59,9 +59,11 @@ public class TeacherServiceImpl implements TeacherServiceI{
         int affectedRows = teacherMapper.deleteTeacher(teacherId);
     }
 
+
+
     @Override
-    public String getPasswordByID(int teacherId) {
-        return teacherMapper.getPasswordByID(teacherId);
+    public Teacher login(String TeacherEmail, String password) {
+        return teacherMapper.login(TeacherEmail, password);
     }
 
     @Override
