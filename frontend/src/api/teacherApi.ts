@@ -9,41 +9,44 @@ export const registerTeacher = async (teacherData: {
   email: string;
   password: string;
 }) => {
-  return axiosRequest('/teacher', 'POST', teacherData); // 修改路径
+  return axiosRequest('/teacher', 'POST', teacherData);
 };
 
 // 2. 根据ID获取教师信息
 export const getTeacherById = async (teacherId: number) => {
-  return axiosRequest(`/teacher/${teacherId}`, 'GET'); // 修改为 GET 请求
+  return axiosRequest(`/teacher/${teacherId}`, 'GET');
 };
 
 // 3. 获取所有教师列表
 export const getAllTeachers = async () => {
-  return axiosRequest('/teacher', 'GET'); // 修改为 GET 请求
+  return axiosRequest('/teacher', 'GET');
 };
 
 // 4. 更新教师信息
 export const updateTeacher = async (teacherId: number, teacherData: { name?: string; department?: string }) => {
-  return axiosRequest(`/teacher/${teacherId}`, 'PUT', teacherData); // 修改路径和参数
+  return axiosRequest(`/teacher/${teacherId}`, 'PUT', teacherData);
 };
 
 // 5. 更新教师密码
 export const updatePassword = async (teacherId: number, newPassword: string) => {
-  return axiosRequest(`/teacher/UpdatePassword/${teacherId}`, 'PUT', { newPassword }); // 修改路径和参数
+  return axiosRequest(`/teacher/UpdatePassword/${teacherId}`, 'PUT', { newPassword });
 };
 
 // 6. 删除教师
 export const deleteTeacher = async (teacherId: number) => {
-  return axiosRequest(`/teacher/${teacherId}`, 'DELETE'); // 修改路径和参数
+  return axiosRequest(`/teacher/${teacherId}`, 'DELETE');
 };
 
 // 7. 教师登录
 export const loginTeacher = async (email: string, password: string) => {
-  return axiosRequest('/teacher/login', 'POST', { email, password }); // 保持一致
+  const formData = new URLSearchParams();
+  formData.append('TeacherEmail', email);
+  formData.append('password', password);
+  return axiosRequest('/teacher/login', 'POST', formData); // 修改为表单参数
 };
 
 // 8. 搜索教师（按姓名或其他条件）
 export const searchTeachers = async (params: { name?: string; department?: string }) => {
   const query = new URLSearchParams(params).toString();
-  return axiosRequest(`/teacher/search?${query}`, 'GET'); // 修改为 GET 请求并拼接查询参数
+  return axiosRequest(`/teacher/search?${query}`, 'GET');
 };
