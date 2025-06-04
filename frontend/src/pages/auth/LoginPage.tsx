@@ -39,6 +39,8 @@ const LoginPage: React.FC = () => {
           major: studentData.major,
           grade: studentData.grade,
         };
+
+        navigate('/student/dashboard', { replace: true });
       } else {
         // 调用教师登录API
         const teacherData = await loginTeacher(values.email, values.password);
@@ -51,6 +53,8 @@ const LoginPage: React.FC = () => {
           department: teacherData.department,
           title: teacherData.title,
         };
+
+        navigate('/teacher/dashboard', { replace: true });
       }
 
       // await login(user, token);
