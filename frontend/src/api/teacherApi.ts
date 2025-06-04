@@ -1,6 +1,14 @@
 import { axiosRequest } from '../utils/request';
 
 // 教师相关接口
+export interface Teacher {
+  title: string;
+  department: string;
+  teacherEmail: string;
+  password?: string;
+  teacherName: string;
+  teacherId: number;
+}
 
 // 1. 注册/添加教师
 export const registerTeacher = async (teacherData: {
@@ -39,7 +47,7 @@ export const deleteTeacher = async (teacherId: number) => {
 
 // 7. 教师登录
 export const loginTeacher = async (email: string, password: string) => {
-  return axiosRequest('/teacher/login', 'POST', null, {
+  return axiosRequest<Teacher>('/teacher/login', 'POST', null, {
     params: { TeacherEmail: email, password }
   }); // 修改为表单参数
 };

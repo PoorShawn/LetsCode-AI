@@ -30,7 +30,7 @@ const LoginPage: React.FC = () => {
       if (userType === 'student') {
         // 调用学生登录API
         const studentData = await loginStudent(values.email, values.password);
-        token = studentData.token; // 从后端获取的 token
+        token = studentData?.token; // 从后端获取的 token
         user = {
           id: studentData.id.toString(),
           name: studentData.name,
@@ -44,15 +44,15 @@ const LoginPage: React.FC = () => {
       } else {
         // 调用教师登录API
         const teacherData = await loginTeacher(values.email, values.password);
-        token = teacherData.token; // 从后端获取的 token
-        user = {
-          id: teacherData.id.toString(),
-          name: teacherData.name,
-          email: teacherData.email,
-          role: 'teacher',
-          department: teacherData.department,
-          title: teacherData.title,
-        };
+        token = teacherData?.token; // 从后端获取的 token
+        // user = {
+        //   id: teacherData.teacherId.toString(),
+        //   name: teacherData.name,
+        //   email: teacherData.email,
+        //   role: 'teacher',
+        //   department: teacherData.department,
+        //   title: teacherData.title,
+        // };
 
         navigate('/teacher/dashboard', { replace: true });
       }
