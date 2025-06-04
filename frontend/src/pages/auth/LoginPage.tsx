@@ -58,7 +58,7 @@ const LoginPage: React.FC = () => {
       }
 
       // await login(user, token);
-      navigate(from, { replace: true });
+      // navigate(from, { replace: true });
     } catch (err: any) {
       setError(err.message || '登录失败，请检查您的邮箱和密码。');
     } finally {
