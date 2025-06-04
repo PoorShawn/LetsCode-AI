@@ -3,7 +3,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 // 创建 Axios 实例
 const axiosInstance = axios.create({
-  baseURL: '/api', // 设置 API 基础 URL
+  baseURL: '', // 设置 API 基础 URL
   timeout: 10000, // 请求超时时间
   headers: {
     'Content-Type': 'application/json',

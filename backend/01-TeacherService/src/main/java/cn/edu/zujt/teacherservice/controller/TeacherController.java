@@ -14,7 +14,7 @@ import java.util.Map;
 
 @RestController
 @ComponentScan
-@RequestMapping("teacher")
+@RequestMapping("/teacher")
 @AllArgsConstructor
 public class TeacherController {
     @Autowired
