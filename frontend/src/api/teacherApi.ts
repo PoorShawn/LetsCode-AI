@@ -39,10 +39,9 @@ export const deleteTeacher = async (teacherId: number) => {
 
 // 7. 教师登录
 export const loginTeacher = async (email: string, password: string) => {
-  const formData = new URLSearchParams();
-  formData.append('TeacherEmail', email);
-  formData.append('password', password);
-  return axiosRequest('/teacher/login', 'POST', formData); // 修改为表单参数
+  return axiosRequest('/teacher/login', 'POST', null, {
+    params: { email, password }
+  }); // 修改为表单参数
 };
 
 // 8. 搜索教师（按姓名或其他条件）
