@@ -40,7 +40,7 @@ export const deleteTeacher = async (teacherId: number) => {
 // 7. 教师登录
 export const loginTeacher = async (email: string, password: string) => {
   return axiosRequest('/teacher/login', 'POST', null, {
-    params: { email, password }
+    params: { TeacherEmail: email, password }
   }); // 修改为表单参数
 };
 

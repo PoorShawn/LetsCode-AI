@@ -16,7 +16,7 @@ const API_PREFIX = "/students";
 // 学生登录
 export const loginStudent = (email: string, password: string) => {
   return axiosRequest<Student>(`${API_PREFIX}/login`, "POST", null, {
-    params: { TeacherEmail: email, password },
+    params: { email, password },
   });
 };
 
