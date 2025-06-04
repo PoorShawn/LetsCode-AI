@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "../../3DGameInEducation/Serenitea"
+		},
+		{
+			"path": "."
+		},
+		{
+			"path": "../TeachingPal/对话智能体"
+		},
+		{
+			"path": "../TeachingPal/AImodule/teachingPlan"
+		}
+	],
+	"settings": {}
+}
