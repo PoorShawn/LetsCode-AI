@@ -6,11 +6,13 @@ import { MailOutlined, LockOutlined } from '@ant-design/icons';
 // import { useAuth } from '../../contexts/AuthContext';
 import { loginStudent } from '../../api/studentApi';
 import { loginTeacher } from '../../api/teacherApi'; // 导入教师登录API
+import { useAuth } from '../../contexts/AuthContext';
 
 const { Title } = Typography;
 
 const LoginPage: React.FC = () => {
   const [form] = Form.useForm();
+  const { setUser } = useAuth();
   // const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -25,12 +27,9 @@ const LoginPage: React.FC = () => {
     setError(null);
     try {
       let user;
-      let token;
 
       if (userType === 'student') {
-        // 调用学生登录API
         const studentData = await loginStudent(values.email, values.password);
-        token = studentData?.token; // 从后端获取的 token
         user = {
           id: studentData.id.toString(),
           name: studentData.name,
@@ -39,26 +38,21 @@ const LoginPage: React.FC = () => {
           major: studentData.major,
           grade: studentData.grade,
         };
-
         navigate('/student/dashboard', { replace: true });
       } else {
-        // 调用教师登录API
         const teacherData = await loginTeacher(values.email, values.password);
-        token = teacherData?.token; // 从后端获取的 token
-        // user = {
-        //   id: teacherData.teacherId.toString(),
-        //   name: teacherData.name,
-        //   email: teacherData.email,
-        //   role: 'teacher',
-        //   department: teacherData.department,
-        //   title: teacherData.title,
-        // };
-
+        user = {
+          id: teacherData.teacherId.toString(),
+          name: teacherData.teacherName,
+          email: teacherData.teacherEmail,
+          role: 'teacher',
+          title: teacherData.title,
+          department: teacherData.department,
+        };
         navigate('/teacher/dashboard', { replace: true });
       }
 
-      // await login(user, token);
-      // navigate(from, { replace: true });
+      setUser(user); // 更新 AuthContext 中的用户信息
     } catch (err: any) {
       setError(err.message || '登录失败，请检查您的邮箱和密码。');
     } finally {
