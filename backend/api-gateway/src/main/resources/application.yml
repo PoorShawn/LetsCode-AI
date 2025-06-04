@@ -1,0 +1,56 @@
+server:
+  port: 7000
+spring:
+  application:
+    name: shop-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: teacher_route
+          uri: lb://service-teacher
+          order: 1
+          predicates:
+            - Path=/teacher-serv/**
+          filters:
+            - StripPrefix=1
+        - id: student_route
+          uri: lb://service-student
+          order: 1
+          predicates:
+            - Path=/student-serv/**
+          filters:
+            - StripPrefix=1
+        - id: curriculum_route
+          uri: lb://service-curriculum
+          order: 1
+          predicates:
+            - Path=/curriculum-serv/**
+          filters:
+            - StripPrefix=1
+        - id: enrollment_route
+          uri: lb://service-enrollment
+          order: 1
+          predicates:
+            - Path=/enrollment-serv/**
+          filters:
+            - StripPrefix=1
+        - id: session_route
+          uri: lb://service-session
+          order: 1
+          predicates:
+            - Path=/session-serv/**
+          filters:
+            - StripPrefix=1
+        - id: learning_analytics_route
+          uri: lb://service-learning-analytics
+          order: 1
+          predicates:
+            - Path=/learning-analytics-serv/**
+          filters:
+            - StripPrefix=1
