@@ -3,6 +3,7 @@ import React from 'react';
 import { Card, Typography, Avatar, Tag, Row, Col, Button, List, Table, Space } from 'antd';
 import { UserOutlined, BookOutlined, ExperimentOutlined } from '@ant-design/icons';
 import { useAuth } from '../../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const { Title, Text } = Typography;
 
@@ -27,6 +28,7 @@ const assignmentStatusColor: Record<string, string> = {
 
 const StudentDashboard: React.FC = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <div className="p-4 md:p-8 bg-gray-50 min-h-screen">
@@ -105,7 +107,10 @@ const StudentDashboard: React.FC = () => {
                       title: '操作',
                       key: 'action',
                       render: (_, record) => (
-                        <Button type="link" size="small">进入</Button>
+                        <>
+                          <Button type="link" size="small" onClick={() => navigate('/student/coder')}>进入</Button>
+                          <Button type="link" size="small">查看分析报告</Button>
+                        </>
                       ),
                     },
                   ]}
