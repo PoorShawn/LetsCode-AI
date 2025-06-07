@@ -1,19 +1,23 @@
 // d:\Github\open-source\LetsCode-AI\frontend\src\pages\teacher\TeacherDashboard.tsx
-import React from 'react';
-import { Card, Typography, Avatar, Tag, Row, Col, Button, List, Table, Space } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Typography, Avatar, Tag, Row, Col, Button, List, Table, Space, message, Spin } from 'antd';
+import type { CardProps } from 'antd';
+import { Card } from 'antd';
 import { UserOutlined, ReadOutlined, EditOutlined } from '@ant-design/icons';
 import { useAuth } from '../../contexts/AuthContext';
+import { getTeacherCourses } from '../../api/teacherApi';
+import { getGradingTasks } from '../../api/gradingApi';
 
 const { Title, Text } = Typography;
 
 // 模拟课程数据
-const courses = [
+const mockCourses = [
   { id: 1, name: '人工智能基础', studentCount: 45 },
   { id: 2, name: '数据结构与算法', studentCount: 38 },
 ];
 
 // 模拟需批改作业数据
-const gradingTasks = [
+const mockGradingTasks = [
   { id: 1, student: '王小明', title: '线性回归编程作业', submitted: '2025-06-08', status: '待批改' },
   { id: 2, student: '李晓红', title: '算法分析报告', submitted: '2025-06-09', status: '已批改' },
 ];
@@ -23,12 +27,63 @@ const gradingStatusColor: Record<string, string> = {
   '已批改': 'green',
 };
 
+interface Course {
+  id: number;
+  name: string;
+  studentCount: number;
+}
+
+interface GradingTask {
+  id: number;
+  student: string;
+  title: string;
+  submitted: string;
+  status: string;
+}
+
 const TeacherDashboard: React.FC = () => {
   const { user } = useAuth();
+  const teacherId = user?.id ? parseInt(user.id) : undefined;
+  const [courses, setCourses] = useState<Course[]>(mockCourses);
+  const [gradingTasks, setGradingTasks] = useState<GradingTask[]>(mockGradingTasks);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!teacherId) {
+        message.error('用户信息不完整');
+        return;
+      }
+
+      try {
+        const [fetchedCourses, fetchedTasks] = await Promise.all([
+          getTeacherCourses(teacherId),
+          getGradingTasks(teacherId)
+        ]);
+
+        // 如果API调用成功，使用API数据
+        if (Array.isArray(fetchedCourses) && fetchedCourses.length > 0) {
+          setCourses(fetchedCourses);
+        }
+        if (Array.isArray(fetchedTasks) && fetchedTasks.length > 0) {
+          setGradingTasks(fetchedTasks);
+        }
+      } catch (error) {
+        console.error('Failed to fetch dashboard data:', error);
+        message.warning('无法从服务器获取数据，将显示模拟数据');
+        // 保持使用模拟数据
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [teacherId]);
 
   return (
     <div className="p-4 md:p-8 bg-gray-50 min-h-screen">
       <Title level={2} className="mb-6 text-green-700">教师仪表盘</Title>
+      <Spin spinning={loading}>
       <Row gutter={[24, 24]}>
         {/* 左侧个人信息 */}
         <Col xs={24} md={8}>
@@ -100,7 +155,7 @@ const TeacherDashboard: React.FC = () => {
                     {
                       title: '操作',
                       key: 'action',
-                      render: (_, record) => (
+                      render: (_: unknown, record: GradingTask) => (
                         <Button type="link" size="small">批改</Button>
                       ),
                     },
@@ -111,6 +166,7 @@ const TeacherDashboard: React.FC = () => {
           </Row>
         </Col>
       </Row>
+      </Spin>
     </div>
   );
 };

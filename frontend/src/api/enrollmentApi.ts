@@ -18,6 +18,15 @@ export interface EnrollmentInfo {
   lessonTerm: string;
 }
 
+// Course 类型定义
+export interface Course {
+  courseId: number;
+  courseName: string;
+  description: string;
+  teacherId: number;
+  studentCount: number;
+}
+
 // API 路径前缀
 const API_PREFIX = "/enrollment";
 
@@ -46,6 +55,22 @@ export const getEnrollmentsByStudent = (studentId: number, userId: number, role:
 export const getEnrollmentInfoByTeacher = (teacherId: number, userId: number, role: string) => {
   return axiosRequest<EnrollmentInfo[]>(
     `${API_PREFIX}/teacher/${teacherId}/${userId}/${role}`,
+    "GET"
+  );
+};
+
+// 获取教师的所有课程
+export const getCoursesByTeacher = (teacherId: number) => {
+  return axiosRequest<Course[]>(
+    `${API_PREFIX}/courses/teacher/${teacherId}`,
+    "GET"
+  );
+};
+
+// 获取课程的所有学生
+export const getStudentsByCourse = (courseId: number) => {
+  return axiosRequest<EnrollmentInfo[]>(
+    `${API_PREFIX}/courses/${courseId}/students`,
     "GET"
   );
 };

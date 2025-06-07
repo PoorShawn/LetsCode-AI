@@ -1,5 +1,31 @@
 import { axiosRequest } from '../utils/request';
 
+// 模拟数据
+const mockTeacherData = {
+  teacherId: 1,
+  teacherName: '张三',
+  teacherEmail: 'zhangsan@example.com',
+  department: '软件工程',
+  title: '副教授'
+};
+
+const mockCourses = [
+  {
+    courseId: 1,
+    courseName: '软件工程导论',
+    courseCode: 'SE101',
+    semester: '2025春季',
+    studentCount: 45
+  },
+  {
+    courseId: 2,
+    courseName: '数据结构',
+    courseCode: 'CS102',
+    semester: '2025春季',
+    studentCount: 60
+  }
+];
+
 // 教师相关接口
 export interface Teacher {
   title: string;
@@ -22,12 +48,24 @@ export const registerTeacher = async (teacherData: {
 
 // 2. 根据ID获取教师信息
 export const getTeacherById = async (teacherId: number) => {
-  return axiosRequest(`/teacher/${teacherId}`, 'GET');
+  try {
+    return await axiosRequest(`/teacher/${teacherId}`, 'GET');
+  } catch (error) {
+    console.error('Failed to fetch teacher:', error);
+    console.log('Using mock data for teacher...');
+    return mockTeacherData;
+  }
 };
 
 // 3. 获取所有教师列表
 export const getAllTeachers = async () => {
-  return axiosRequest('/teacher', 'GET');
+  try {
+    return await axiosRequest('/teacher', 'GET');
+  } catch (error) {
+    console.error('Failed to fetch teachers:', error);
+    console.log('Using mock data for teachers...');
+    return [mockTeacherData];
+  }
 };
 
 // 4. 更新教师信息
@@ -56,4 +94,16 @@ export const loginTeacher = async (email: string, password: string) => {
 export const searchTeachers = async (params: { name?: string; department?: string }) => {
   const query = new URLSearchParams(params).toString();
   return axiosRequest(`/teacher/search?${query}`, 'GET');
+};
+
+// 9. 获取教师的课程列表
+export const getTeacherCourses = async (teacherId: number) => {
+  try {
+    const response = await axiosRequest(`/teacher/${teacherId}/courses`, 'GET');
+    return response;
+  } catch (error) {
+    console.error('Failed to fetch teacher courses:', error);
+    console.log('Using mock data for courses...');
+    return mockCourses;
+  }
 };

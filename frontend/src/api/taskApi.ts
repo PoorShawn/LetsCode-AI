@@ -4,10 +4,11 @@ import { axiosRequest } from "../utils/request";
 export interface Task {
   taskId: number;
   taskName: string;
-  taskContent: string;
-  lessonId: number;
+  description: string;
+  deadline: string;
   teacherId: number;
-  Student_has_Lesson_ID: number;
+  lessonId?: number;
+  Student_has_Lesson_ID?: number;
 }
 
 // API 路径前缀
@@ -43,4 +44,9 @@ export const getTasksByLesson = (lessonId: number) => {
 // 根据学生获取任务
 export const getTasksByStudent = (studentId: number) => {
   return axiosRequest<Task[]>(`${API_PREFIX}/byStudent/${studentId}`, "GET");
+};
+
+// 根据教师获取任务
+export const getTasksByTeacher = (teacherId: number) => {
+  return axiosRequest<Task[]>(`${API_PREFIX}/byTeacher/${teacherId}`, "GET");
 };
